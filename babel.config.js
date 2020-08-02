@@ -1,4 +1,4 @@
-module.exports = {
+const defaultOptions = {
   presets: [
     [
       '@babel/preset-env',
@@ -18,4 +18,16 @@ module.exports = {
     ['@babel/plugin-proposal-class-properties', { loose: true }]
   ],
   comments: false
+}
+
+module.exports = api => {
+  if (api.env('browser')) {
+    return {
+      ...defaultOptions,
+      // do not target node in the browser for transpilation
+      presets: ['@babel/preset-env', '@vue/babel-preset-jsx']
+    }
+  } else {
+    return defaultOptions
+  }
 }

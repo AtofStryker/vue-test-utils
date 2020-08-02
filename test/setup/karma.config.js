@@ -36,15 +36,16 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-jasmine',
       // Adding it to the plugins array
-      'karma-chrome-launcher'
+      'karma-chrome-launcher',
+      'karma-spec-reporter'
     ],
     basePath: '',
     reporters: ['spec'],
     frameworks: ['jasmine'],
-    files: ['./test/setup/karma.setup.js', '**/*.spec.js'],
+    files: ['./karma.setup.js', '../specs/**/*.spec.js'],
     preprocessors: {
       './karma.setup.js': ['webpack'],
-      '**/*.spec.js': ['webpack']
+      '../specs/**/*.spec.js': ['webpack']
     },
     webpack: webpackConfig,
     webpackMiddleware: {

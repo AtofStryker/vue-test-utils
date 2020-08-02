@@ -9,7 +9,7 @@
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "test:unit": "cross-env TARGET=dev yarn jest",
-    "test:unit:compat": "cross-env TARGET=dev yarn jest",
+    "test:unit:compat": "cross-env TEST_ENV=browser TARGET=dev NODE_ENV=browser karma start ./test/setup/karma.config.js",
     "test:types": "tsc -p packages/test-utils/types && tsc -p packages/server-test-utils/types"
   },
   "dependencies": {
@@ -70,6 +70,7 @@
     "karma": "^5.1.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^3.3.1",
+    "karma-spec-reporter": "^0.0.32",
     "karma-webpack": "^4.0.2",
     "lint-staged": "^9.5.0",
     "prettier": "^1.16.0",
