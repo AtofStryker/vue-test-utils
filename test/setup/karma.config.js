@@ -6,7 +6,6 @@ module.exports = config => {
     plugins: [
       'karma-webpack',
       'karma-jasmine',
-      'karma-webpack',
       'karma-chrome-launcher',
       'karma-spec-reporter'
     ],
