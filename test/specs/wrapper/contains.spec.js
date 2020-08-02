@@ -6,7 +6,7 @@ import ComponentAsAClass from '~resources/components/component-as-a-class.vue'
 import {
   functionalSFCsSupported,
   describeWithShallowAndMount,
-  isRunningPhantomJS
+  isRunningChrome
 } from '~resources/utils'
 import { itSkipIf } from 'conditional-specs'
 import ComponentWithoutName from '~resources/components/component-without-name.vue'
@@ -43,7 +43,7 @@ describeWithShallowAndMount('contains', mountingMethod => {
   })
 
   itSkipIf(
-    isRunningPhantomJS,
+    isRunningChrome,
     'returns true if wrapper contains Vue class component',
     () => {
       const TestComponent = {

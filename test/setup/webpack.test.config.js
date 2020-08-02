@@ -18,6 +18,17 @@ const rules = [].concat(
     test: /\.js$/,
     use: 'babel-loader',
     exclude: /node_modules/
+  },
+  {
+    test: /\.css$/,
+    use: [
+      {
+        loader: 'vue-style-loader'
+      },
+      {
+        loader: 'css-loader'
+      }
+    ]
   }
 )
 const externals = nodeExternals({
@@ -31,15 +42,16 @@ const externals = nodeExternals({
 })
 // define the default aliases
 let aliasedFiles = {}
-if (process.env.TARGET === 'dev') {
+if (process.env.TARGET === 'browser') {
   // if we are in dev test mode, we want to alias all files to the src file, not dist
   aliasedFiles = {
     '@vue/server-test-utils': `@vue/server-test-utils/src/index.js`,
     '@vue/test-utils': `@vue/test-utils/src/index.js`
   }
 }
+
 module.exports = {
-  mode: process.env.TARGET === 'dev' ? 'development' : 'production',
+  mode: process.env.TARGET === 'browser' ? 'development' : 'production',
   module: {
     rules
   },
@@ -47,7 +59,8 @@ module.exports = {
   resolve: {
     alias: {
       ...aliasedFiles,
-      '~resources': `${projectRoot}/test/resources`
+      '~resources': `${projectRoot}/test/resources`,
+      packages: path.resolve(projectRoot, 'packages')
     }
   },
   output: {

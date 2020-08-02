@@ -24,8 +24,16 @@ module.exports = api => {
   if (api.env('browser')) {
     return {
       ...defaultOptions,
-      // do not target node in the browser for transpilation
-      presets: ['@babel/preset-env', '@vue/babel-preset-jsx']
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            corejs: 3,
+            useBuiltIns: 'entry'
+          }
+        ],
+        '@vue/babel-preset-jsx'
+      ]
     }
   } else {
     return defaultOptions

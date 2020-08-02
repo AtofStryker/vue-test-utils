@@ -1,4 +1,7 @@
 // the jest.fn() API
+import 'core-js'
+import 'regenerator-runtime/runtime'
+
 import jest from 'jest-mock'
 // The matchers API
 import expect from 'expect'
@@ -10,5 +13,10 @@ window.test.each = inputs => (testName, test) =>
 window.test.todo = function() {
   return undefined
 }
+window.test.skip = function() {
+  return undefined
+}
+
+window.only = window.fit
 window.jest = jest
 window.expect = expect
