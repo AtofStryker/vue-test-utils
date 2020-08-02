@@ -6,7 +6,7 @@ run() {
   echo "running unit tests with Vue $1"
   yarn add --pure-lockfile --non-interactive -W -D "vue@$1" "vue-template-compiler@$1" "vue-server-renderer@$1"
   yarn test:unit
-  yarn test:unit:compat
+  yarn test:unit:browser
 }
 
 yarn build:test

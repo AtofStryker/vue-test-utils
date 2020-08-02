@@ -14,9 +14,10 @@
     "lint:docs": "eslint --ext js,vue,md docs --ignore-path .gitignore",
     "format": "prettier --write \"**/*.{js,json,vue,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,vue,md}\"",
-    "test": "yarn format:check && yarn lint && yarn lint:docs && yarn flow && yarn test:types && yarn test:unit && yarn test:unit:compat",
+    "test": "yarn format:check && yarn lint && yarn lint:docs && yarn flow && yarn test:types && yarn test:unit && yarn test:unit:browser",
     "test:unit": "cross-env TARGET=dev yarn jest",
-    "test:unit:compat": "cross-env TEST_ENV=browser TARGET=browser NODE_ENV=browser karma start ./test/setup/karma.config.js --single-run",
+    "test:unit:browser": "cross-env TEST_ENV=browser TARGET=browser NODE_ENV=browser karma start ./test/setup/karma.config.js --single-run",
+    "test:compat": "scripts/test-compat.sh",
     "test:types": "tsc -p packages/test-utils/types && tsc -p packages/server-test-utils/types"
   },
   "dependencies": {
