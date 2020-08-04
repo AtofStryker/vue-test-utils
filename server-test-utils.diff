@@ -1,0 +1,110 @@
+diff -bur --color packages/server-test-utils/distOriginal/vue-server-test-utils.js packages/server-test-utils/dist/vue-server-test-utils.js
+--- packages/server-test-utils/distOriginal/vue-server-test-utils.js	2020-08-03 23:46:45.434823466 -0400
++++ packages/server-test-utils/dist/vue-server-test-utils.js	2020-08-04 00:02:05.108212437 -0400
+@@ -58,14 +58,24 @@
+ 
+ var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+ 
+-function createCommonjsModule(fn, module) {
+-	return module = { exports: {} }, fn(module, module.exports), module.exports;
++function createCommonjsModule(fn, basedir, module) {
++	return module = {
++	  path: basedir,
++	  exports: {},
++	  require: function (path, base) {
++      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
++    }
++	}, fn(module, module.exports), module.exports;
+ }
+ 
+ function getCjsExportFromNamespace (n) {
+ 	return n && n['default'] || n;
+ }
+ 
++function commonjsRequire () {
++	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
++}
++
+ var semver = createCommonjsModule(function (module, exports) {
+ exports = module.exports = SemVer;
+ 
+@@ -1664,48 +1674,6 @@
+     '.' + (match[4] || '0'), options)
+ }
+ });
+-var semver_1 = semver.SEMVER_SPEC_VERSION;
+-var semver_2 = semver.re;
+-var semver_3 = semver.src;
+-var semver_4 = semver.tokens;
+-var semver_5 = semver.parse;
+-var semver_6 = semver.valid;
+-var semver_7 = semver.clean;
+-var semver_8 = semver.SemVer;
+-var semver_9 = semver.inc;
+-var semver_10 = semver.diff;
+-var semver_11 = semver.compareIdentifiers;
+-var semver_12 = semver.rcompareIdentifiers;
+-var semver_13 = semver.major;
+-var semver_14 = semver.minor;
+-var semver_15 = semver.patch;
+-var semver_16 = semver.compare;
+-var semver_17 = semver.compareLoose;
+-var semver_18 = semver.compareBuild;
+-var semver_19 = semver.rcompare;
+-var semver_20 = semver.sort;
+-var semver_21 = semver.rsort;
+-var semver_22 = semver.gt;
+-var semver_23 = semver.lt;
+-var semver_24 = semver.eq;
+-var semver_25 = semver.neq;
+-var semver_26 = semver.gte;
+-var semver_27 = semver.lte;
+-var semver_28 = semver.cmp;
+-var semver_29 = semver.Comparator;
+-var semver_30 = semver.Range;
+-var semver_31 = semver.toComparators;
+-var semver_32 = semver.satisfies;
+-var semver_33 = semver.maxSatisfying;
+-var semver_34 = semver.minSatisfying;
+-var semver_35 = semver.minVersion;
+-var semver_36 = semver.validRange;
+-var semver_37 = semver.ltr;
+-var semver_38 = semver.gtr;
+-var semver_39 = semver.outside;
+-var semver_40 = semver.prerelease;
+-var semver_41 = semver.intersects;
+-var semver_42 = semver.coerce;
+ 
+ var NAME_SELECTOR = 'NAME_SELECTOR';
+ var COMPONENT_SELECTOR = 'COMPONENT_SELECTOR';
+@@ -1770,7 +1738,7 @@
+   try {
+     document.querySelector(selector);
+     return true
+-  } catch (error) {
++  } catch (error$1) {
+     return false
+   }
+ }
+@@ -2651,12 +2619,6 @@
+ exports.lineBreak = new RegExp('\r\n|' + exports.newline.source);
+ exports.allLineBreaks = new RegExp(exports.lineBreak.source, 'g');
+ });
+-var acorn_1 = acorn.identifier;
+-var acorn_2 = acorn.identifierStart;
+-var acorn_3 = acorn.identifierMatch;
+-var acorn_4 = acorn.newline;
+-var acorn_5 = acorn.lineBreak;
+-var acorn_6 = acorn.allLineBreaks;
+ 
+ /*jshint node:true */
+ 
+@@ -10528,7 +10490,7 @@
+     } catch (e) {}
+     try {
+       return (func + '');
+-    } catch (e) {}
++    } catch (e$1) {}
+   }
+   return '';
+ }

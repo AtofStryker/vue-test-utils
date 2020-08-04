@@ -1,0 +1,352 @@
+diff -bur --color packages/test-utils/distOriginal/vue-test-utils.iife.js packages/test-utils/dist/vue-test-utils.iife.js
+--- packages/test-utils/distOriginal/vue-test-utils.iife.js	2020-08-03 23:46:51.218906076 -0400
++++ packages/test-utils/dist/vue-test-utils.iife.js	2020-08-04 00:02:10.764295176 -0400
+@@ -1,7 +1,7 @@
+ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
+   'use strict';
+ 
+-  Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
++  Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
+ 
+   // 
+ 
+@@ -50,14 +50,24 @@
+ 
+   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+ 
+-  function createCommonjsModule(fn, module) {
+-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
++  function createCommonjsModule(fn, basedir, module) {
++  	return module = {
++  	  path: basedir,
++  	  exports: {},
++  	  require: function (path, base) {
++        return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
++      }
++  	}, fn(module, module.exports), module.exports;
+   }
+ 
+   function getCjsExportFromNamespace (n) {
+   	return n && n['default'] || n;
+   }
+ 
++  function commonjsRequire () {
++  	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
++  }
++
+   var semver = createCommonjsModule(function (module, exports) {
+   exports = module.exports = SemVer;
+ 
+@@ -1656,48 +1666,6 @@
+       '.' + (match[4] || '0'), options)
+   }
+   });
+-  var semver_1 = semver.SEMVER_SPEC_VERSION;
+-  var semver_2 = semver.re;
+-  var semver_3 = semver.src;
+-  var semver_4 = semver.tokens;
+-  var semver_5 = semver.parse;
+-  var semver_6 = semver.valid;
+-  var semver_7 = semver.clean;
+-  var semver_8 = semver.SemVer;
+-  var semver_9 = semver.inc;
+-  var semver_10 = semver.diff;
+-  var semver_11 = semver.compareIdentifiers;
+-  var semver_12 = semver.rcompareIdentifiers;
+-  var semver_13 = semver.major;
+-  var semver_14 = semver.minor;
+-  var semver_15 = semver.patch;
+-  var semver_16 = semver.compare;
+-  var semver_17 = semver.compareLoose;
+-  var semver_18 = semver.compareBuild;
+-  var semver_19 = semver.rcompare;
+-  var semver_20 = semver.sort;
+-  var semver_21 = semver.rsort;
+-  var semver_22 = semver.gt;
+-  var semver_23 = semver.lt;
+-  var semver_24 = semver.eq;
+-  var semver_25 = semver.neq;
+-  var semver_26 = semver.gte;
+-  var semver_27 = semver.lte;
+-  var semver_28 = semver.cmp;
+-  var semver_29 = semver.Comparator;
+-  var semver_30 = semver.Range;
+-  var semver_31 = semver.toComparators;
+-  var semver_32 = semver.satisfies;
+-  var semver_33 = semver.maxSatisfying;
+-  var semver_34 = semver.minSatisfying;
+-  var semver_35 = semver.minVersion;
+-  var semver_36 = semver.validRange;
+-  var semver_37 = semver.ltr;
+-  var semver_38 = semver.gtr;
+-  var semver_39 = semver.outside;
+-  var semver_40 = semver.prerelease;
+-  var semver_41 = semver.intersects;
+-  var semver_42 = semver.coerce;
+ 
+   var NAME_SELECTOR = 'NAME_SELECTOR';
+   var COMPONENT_SELECTOR = 'COMPONENT_SELECTOR';
+@@ -1912,7 +1880,7 @@
+     try {
+       document.querySelector(selector);
+       return true
+-    } catch (error) {
++    } catch (error$1) {
+       return false
+     }
+   }
+@@ -3513,12 +3481,6 @@
+   exports.lineBreak = new RegExp('\r\n|' + exports.newline.source);
+   exports.allLineBreaks = new RegExp(exports.lineBreak.source, 'g');
+   });
+-  var acorn_1 = acorn.identifier;
+-  var acorn_2 = acorn.identifierStart;
+-  var acorn_3 = acorn.identifierMatch;
+-  var acorn_4 = acorn.newline;
+-  var acorn_5 = acorn.lineBreak;
+-  var acorn_6 = acorn.allLineBreaks;
+ 
+   /*jshint node:true */
+ 
+@@ -11681,7 +11643,7 @@
+       } catch (e) {}
+       try {
+         return (func + '');
+-      } catch (e) {}
++      } catch (e$1) {}
+     }
+     return '';
+   }
+diff -bur --color packages/test-utils/distOriginal/vue-test-utils.js packages/test-utils/dist/vue-test-utils.js
+--- packages/test-utils/distOriginal/vue-test-utils.js	2020-08-03 23:46:51.222906133 -0400
++++ packages/test-utils/dist/vue-test-utils.js	2020-08-04 00:02:10.760295118 -0400
+@@ -54,14 +54,24 @@
+ 
+ var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+ 
+-function createCommonjsModule(fn, module) {
+-	return module = { exports: {} }, fn(module, module.exports), module.exports;
++function createCommonjsModule(fn, basedir, module) {
++	return module = {
++	  path: basedir,
++	  exports: {},
++	  require: function (path, base) {
++      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
++    }
++	}, fn(module, module.exports), module.exports;
+ }
+ 
+ function getCjsExportFromNamespace (n) {
+ 	return n && n['default'] || n;
+ }
+ 
++function commonjsRequire () {
++	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
++}
++
+ var semver = createCommonjsModule(function (module, exports) {
+ exports = module.exports = SemVer;
+ 
+@@ -1660,48 +1670,6 @@
+     '.' + (match[4] || '0'), options)
+ }
+ });
+-var semver_1 = semver.SEMVER_SPEC_VERSION;
+-var semver_2 = semver.re;
+-var semver_3 = semver.src;
+-var semver_4 = semver.tokens;
+-var semver_5 = semver.parse;
+-var semver_6 = semver.valid;
+-var semver_7 = semver.clean;
+-var semver_8 = semver.SemVer;
+-var semver_9 = semver.inc;
+-var semver_10 = semver.diff;
+-var semver_11 = semver.compareIdentifiers;
+-var semver_12 = semver.rcompareIdentifiers;
+-var semver_13 = semver.major;
+-var semver_14 = semver.minor;
+-var semver_15 = semver.patch;
+-var semver_16 = semver.compare;
+-var semver_17 = semver.compareLoose;
+-var semver_18 = semver.compareBuild;
+-var semver_19 = semver.rcompare;
+-var semver_20 = semver.sort;
+-var semver_21 = semver.rsort;
+-var semver_22 = semver.gt;
+-var semver_23 = semver.lt;
+-var semver_24 = semver.eq;
+-var semver_25 = semver.neq;
+-var semver_26 = semver.gte;
+-var semver_27 = semver.lte;
+-var semver_28 = semver.cmp;
+-var semver_29 = semver.Comparator;
+-var semver_30 = semver.Range;
+-var semver_31 = semver.toComparators;
+-var semver_32 = semver.satisfies;
+-var semver_33 = semver.maxSatisfying;
+-var semver_34 = semver.minSatisfying;
+-var semver_35 = semver.minVersion;
+-var semver_36 = semver.validRange;
+-var semver_37 = semver.ltr;
+-var semver_38 = semver.gtr;
+-var semver_39 = semver.outside;
+-var semver_40 = semver.prerelease;
+-var semver_41 = semver.intersects;
+-var semver_42 = semver.coerce;
+ 
+ var NAME_SELECTOR = 'NAME_SELECTOR';
+ var COMPONENT_SELECTOR = 'COMPONENT_SELECTOR';
+@@ -1916,7 +1884,7 @@
+   try {
+     document.querySelector(selector);
+     return true
+-  } catch (error) {
++  } catch (error$1) {
+     return false
+   }
+ }
+@@ -3517,12 +3485,6 @@
+ exports.lineBreak = new RegExp('\r\n|' + exports.newline.source);
+ exports.allLineBreaks = new RegExp(exports.lineBreak.source, 'g');
+ });
+-var acorn_1 = acorn.identifier;
+-var acorn_2 = acorn.identifierStart;
+-var acorn_3 = acorn.identifierMatch;
+-var acorn_4 = acorn.newline;
+-var acorn_5 = acorn.lineBreak;
+-var acorn_6 = acorn.allLineBreaks;
+ 
+ /*jshint node:true */
+ 
+@@ -11685,7 +11647,7 @@
+     } catch (e) {}
+     try {
+       return (func + '');
+-    } catch (e) {}
++    } catch (e$1) {}
+   }
+   return '';
+ }
+diff -bur --color packages/test-utils/distOriginal/vue-test-utils.umd.js packages/test-utils/dist/vue-test-utils.umd.js
+--- packages/test-utils/distOriginal/vue-test-utils.umd.js	2020-08-03 23:46:51.214906018 -0400
++++ packages/test-utils/dist/vue-test-utils.umd.js	2020-08-04 00:02:10.764295176 -0400
+@@ -1,10 +1,10 @@
+ (function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue'), require('vue-template-compiler')) :
+   typeof define === 'function' && define.amd ? define(['exports', 'vue', 'vue-template-compiler'], factory) :
+-  (global = global || self, factory(global.VueTestUtils = {}, global.Vue, global.VueTemplateCompiler));
++  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.VueTestUtils = {}, global.Vue, global.VueTemplateCompiler));
+ }(this, (function (exports, Vue, vueTemplateCompiler) { 'use strict';
+ 
+-  Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
++  Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
+ 
+   // 
+ 
+@@ -53,14 +53,24 @@
+ 
+   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+ 
+-  function createCommonjsModule(fn, module) {
+-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
++  function createCommonjsModule(fn, basedir, module) {
++  	return module = {
++  	  path: basedir,
++  	  exports: {},
++  	  require: function (path, base) {
++        return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
++      }
++  	}, fn(module, module.exports), module.exports;
+   }
+ 
+   function getCjsExportFromNamespace (n) {
+   	return n && n['default'] || n;
+   }
+ 
++  function commonjsRequire () {
++  	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
++  }
++
+   var semver = createCommonjsModule(function (module, exports) {
+   exports = module.exports = SemVer;
+ 
+@@ -1659,48 +1669,6 @@
+       '.' + (match[4] || '0'), options)
+   }
+   });
+-  var semver_1 = semver.SEMVER_SPEC_VERSION;
+-  var semver_2 = semver.re;
+-  var semver_3 = semver.src;
+-  var semver_4 = semver.tokens;
+-  var semver_5 = semver.parse;
+-  var semver_6 = semver.valid;
+-  var semver_7 = semver.clean;
+-  var semver_8 = semver.SemVer;
+-  var semver_9 = semver.inc;
+-  var semver_10 = semver.diff;
+-  var semver_11 = semver.compareIdentifiers;
+-  var semver_12 = semver.rcompareIdentifiers;
+-  var semver_13 = semver.major;
+-  var semver_14 = semver.minor;
+-  var semver_15 = semver.patch;
+-  var semver_16 = semver.compare;
+-  var semver_17 = semver.compareLoose;
+-  var semver_18 = semver.compareBuild;
+-  var semver_19 = semver.rcompare;
+-  var semver_20 = semver.sort;
+-  var semver_21 = semver.rsort;
+-  var semver_22 = semver.gt;
+-  var semver_23 = semver.lt;
+-  var semver_24 = semver.eq;
+-  var semver_25 = semver.neq;
+-  var semver_26 = semver.gte;
+-  var semver_27 = semver.lte;
+-  var semver_28 = semver.cmp;
+-  var semver_29 = semver.Comparator;
+-  var semver_30 = semver.Range;
+-  var semver_31 = semver.toComparators;
+-  var semver_32 = semver.satisfies;
+-  var semver_33 = semver.maxSatisfying;
+-  var semver_34 = semver.minSatisfying;
+-  var semver_35 = semver.minVersion;
+-  var semver_36 = semver.validRange;
+-  var semver_37 = semver.ltr;
+-  var semver_38 = semver.gtr;
+-  var semver_39 = semver.outside;
+-  var semver_40 = semver.prerelease;
+-  var semver_41 = semver.intersects;
+-  var semver_42 = semver.coerce;
+ 
+   var NAME_SELECTOR = 'NAME_SELECTOR';
+   var COMPONENT_SELECTOR = 'COMPONENT_SELECTOR';
+@@ -1915,7 +1883,7 @@
+     try {
+       document.querySelector(selector);
+       return true
+-    } catch (error) {
++    } catch (error$1) {
+       return false
+     }
+   }
+@@ -3516,12 +3484,6 @@
+   exports.lineBreak = new RegExp('\r\n|' + exports.newline.source);
+   exports.allLineBreaks = new RegExp(exports.lineBreak.source, 'g');
+   });
+-  var acorn_1 = acorn.identifier;
+-  var acorn_2 = acorn.identifierStart;
+-  var acorn_3 = acorn.identifierMatch;
+-  var acorn_4 = acorn.newline;
+-  var acorn_5 = acorn.lineBreak;
+-  var acorn_6 = acorn.allLineBreaks;
+ 
+   /*jshint node:true */
+ 
+@@ -11684,7 +11646,7 @@
+       } catch (e) {}
+       try {
+         return (func + '');
+-      } catch (e) {}
++      } catch (e$1) {}
+     }
+     return '';
+   }
