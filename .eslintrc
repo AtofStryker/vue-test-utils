@@ -14,6 +14,8 @@
     "plugin:flowtype/recommended"
   ],
   "rules": {
+    "for-direction": "off",
+    "getter-return": "off",
     "no-debugger": 2,
     "no-proto": 0,
     "space-before-function-paren": 0,
