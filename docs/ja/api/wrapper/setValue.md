@@ -15,14 +15,14 @@ import Foo from './Foo.vue'
 const wrapper = mount(Foo)
 
 const textInput = wrapper.find('input[type="text"]')
-textInput.setValue('some value')
+await textInput.setValue('some value')
 
 const select = wrapper.find('select')
-select.setValue('option value')
+await select.setValue('option value')
 
 // requires <select multiple>
 const multiselect = wrapper.find('select')
-multiselect.setValue(['value1', 'value3'])
+await multiselect.setValue(['value1', 'value3'])
 ```
 
 - **注:**
@@ -31,12 +31,14 @@ multiselect.setValue(['value1', 'value3'])
 
   ```js
   textInput.element.value = value
-  textInput.trigger('input')
+  await Vue.nextTick()
+  await textInput.trigger('input')
   ```
 
   - `select.setValue(value)` は以下のコードのエイリアスです。
 
   ```js
   select.element.value = value
-  select.trigger('change')
+  await Vue.nextTick()
+  await select.trigger('change')
   ```
