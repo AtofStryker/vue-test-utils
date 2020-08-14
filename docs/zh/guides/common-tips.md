@@ -153,7 +153,7 @@ describe('ParentComponent', () => {
 ```js
 wrapper.setData({ count: 10 })
 
-wrapper.setProps({ foo: 'bar' })
+await wrapper.setProps({ foo: 'bar' })
 ```
 
 ### 仿造 Prop

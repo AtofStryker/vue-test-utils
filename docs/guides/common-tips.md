@@ -155,7 +155,7 @@ You can directly manipulate the state of the component using the `setData` or `s
 ```js
 wrapper.setData({ count: 10 })
 
-wrapper.setProps({ foo: 'bar' })
+await wrapper.setProps({ foo: 'bar' })
 ```
 
 ### Mocking Props

@@ -65,7 +65,7 @@ expect(wrapper.emitted().foo[1]).toEqual([123])
 ```js
 wrapper.setData({ count: 10 })
 
-wrapper.setProps({ foo: 'bar' })
+await wrapper.setProps({ foo: 'bar' })
 ```
 
 ### プロパティをモックする
