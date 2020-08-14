@@ -11,7 +11,7 @@ import Foo from './Foo.vue'
 const wrapper = mount(Foo)
 const options = wrapper.find('select').findAll('option')
 
-options.at(1).setSelected()
+await options.at(1).setSelected()
 ```
 
 - **Примечание:**
@@ -22,5 +22,6 @@ options.at(1).setSelected()
 
 ```js
 option.element.selected = true
-parentSelect.trigger('change')
+await Vue.nextTick()
+await parentSelect.trigger('change')
 ```
