@@ -14,7 +14,7 @@ import Foo from './Foo.vue'
 
 const wrapper = mount(Foo)
 const radioInput = wrapper.find('input[type="radio"]')
-radioInput.setChecked()
+await radioInput.setChecked()
 ```
 
 - **Note:**
@@ -25,6 +25,7 @@ When you try to set the value to state via `v-model` by `radioInput.element.chec
 
 ```js
 checkboxInput.element.checked = checked
-checkboxInput.trigger('click')
-checkboxInput.trigger('change')
+await Vue.nextTick()
+await checkboxInput.trigger('click')
+await checkboxInput.trigger('change')
 ```

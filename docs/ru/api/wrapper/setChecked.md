@@ -14,7 +14,7 @@ import Foo from './Foo.vue'
 
 const wrapper = mount(Foo)
 const radioInput = wrapper.find('input[type="radio"]')
-radioInput.setChecked()
+await radioInput.setChecked()
 ```
 
 - **Примечание:**
@@ -25,6 +25,7 @@ radioInput.setChecked()
 
 ```js
 checkboxInput.element.checked = checked
-checkboxInput.trigger('click')
-checkboxInput.trigger('change')
+await Vue.nextTick()
+await checkboxInput.trigger('click')
+await checkboxInput.trigger('change')
 ```
