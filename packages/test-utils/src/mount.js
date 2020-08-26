@@ -14,13 +14,17 @@ Vue.config.productionTip = false
 Vue.config.devtools = false
 
 export default function mount(component, options = {}) {
+  const hasConfig =  options.localVue && options.localVue.config && options.localVue.config
   warnIfNoWindow()
 
   polyfill()
 
-  addGlobalErrorHandler(Vue)
+  // if a custom errorHandler is provided, register it!
+  addGlobalErrorHandler(
+    hasConfig ? options.localVue : Vue
+  )
 
-  const _Vue = _createLocalVue(options.localVue)
+  const _Vue = _createLocalVue(options.localVue, hasConfig ? options.localVue.config : {})
 
   const mergedOptions = mergeOptions(options, config)
 

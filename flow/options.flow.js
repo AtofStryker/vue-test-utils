@@ -36,6 +36,11 @@ declare type NormalizedOptions = {
   shouldProxy?: boolean
 }
 
+declare type VueConfig = {
+  optionMergeStrategies?: { [key: string]: Function },
+  errorHandler?: Function
+}
+
 declare type SlotValue = Component | string | Array<Component | string>
 
 declare type SlotsObject = { [name: string]: SlotValue }
