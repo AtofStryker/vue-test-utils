@@ -1,7 +1,9 @@
 var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   'use strict';
 
-  Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var Vue__default = /*#__PURE__*/_interopDefaultLegacy(Vue);
 
   // 
 
@@ -50,12 +52,22 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-  function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  function createCommonjsModule(fn, basedir, module) {
+  	return module = {
+  	  path: basedir,
+  	  exports: {},
+  	  require: function (path, base) {
+        return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+      }
+  	}, fn(module, module.exports), module.exports;
   }
 
   function getCjsExportFromNamespace (n) {
   	return n && n['default'] || n;
+  }
+
+  function commonjsRequire () {
+  	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
   }
 
   var semver = createCommonjsModule(function (module, exports) {
@@ -1656,48 +1668,6 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
       '.' + (match[4] || '0'), options)
   }
   });
-  var semver_1 = semver.SEMVER_SPEC_VERSION;
-  var semver_2 = semver.re;
-  var semver_3 = semver.src;
-  var semver_4 = semver.tokens;
-  var semver_5 = semver.parse;
-  var semver_6 = semver.valid;
-  var semver_7 = semver.clean;
-  var semver_8 = semver.SemVer;
-  var semver_9 = semver.inc;
-  var semver_10 = semver.diff;
-  var semver_11 = semver.compareIdentifiers;
-  var semver_12 = semver.rcompareIdentifiers;
-  var semver_13 = semver.major;
-  var semver_14 = semver.minor;
-  var semver_15 = semver.patch;
-  var semver_16 = semver.compare;
-  var semver_17 = semver.compareLoose;
-  var semver_18 = semver.compareBuild;
-  var semver_19 = semver.rcompare;
-  var semver_20 = semver.sort;
-  var semver_21 = semver.rsort;
-  var semver_22 = semver.gt;
-  var semver_23 = semver.lt;
-  var semver_24 = semver.eq;
-  var semver_25 = semver.neq;
-  var semver_26 = semver.gte;
-  var semver_27 = semver.lte;
-  var semver_28 = semver.cmp;
-  var semver_29 = semver.Comparator;
-  var semver_30 = semver.Range;
-  var semver_31 = semver.toComparators;
-  var semver_32 = semver.satisfies;
-  var semver_33 = semver.maxSatisfying;
-  var semver_34 = semver.minSatisfying;
-  var semver_35 = semver.minVersion;
-  var semver_36 = semver.validRange;
-  var semver_37 = semver.ltr;
-  var semver_38 = semver.gtr;
-  var semver_39 = semver.outside;
-  var semver_40 = semver.prerelease;
-  var semver_41 = semver.intersects;
-  var semver_42 = semver.coerce;
 
   var NAME_SELECTOR = 'NAME_SELECTOR';
   var COMPONENT_SELECTOR = 'COMPONENT_SELECTOR';
@@ -1706,17 +1676,17 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   var INVALID_SELECTOR = 'INVALID_SELECTOR';
 
   var VUE_VERSION = Number(
-    ((Vue.version.split('.')[0]) + "." + (Vue.version.split('.')[1]))
+    ((Vue__default['default'].version.split('.')[0]) + "." + (Vue__default['default'].version.split('.')[1]))
   );
 
   var FUNCTIONAL_OPTIONS =
     VUE_VERSION >= 2.5 ? 'fnOptions' : 'functionalOptions';
 
-  var BEFORE_RENDER_LIFECYCLE_HOOK = semver.gt(Vue.version, '2.1.8')
+  var BEFORE_RENDER_LIFECYCLE_HOOK = semver.gt(Vue__default['default'].version, '2.1.8')
     ? 'beforeCreate'
     : 'beforeMount';
 
-  var CREATE_ELEMENT_ALIAS = semver.gt(Vue.version, '2.1.5')
+  var CREATE_ELEMENT_ALIAS = semver.gt(Vue__default['default'].version, '2.1.5')
     ? '_c'
     : '_h';
 
@@ -1754,6 +1724,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   }
 
   function keys(obj) {
+    // $FlowIgnore
     return Object.keys(obj)
   }
 
@@ -1789,7 +1760,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
   // get the event used to trigger v-model handler that updates bound data
   function getCheckedEvent() {
-    var version = Vue.version;
+    var version = Vue__default['default'].version;
 
     if (semver.satisfies(version, '2.1.9 - 2.1.10')) {
       return 'click'
@@ -1809,9 +1780,9 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
    * @return {Promise<R>}
    */
   function nextTick() {
-    if (VUE_VERSION > 2) { return Vue.nextTick() }
+    if (VUE_VERSION > 2) { return Vue__default['default'].nextTick() }
     return new Promise(function (resolve) {
-      Vue.nextTick(resolve);
+      Vue__default['default'].nextTick(resolve);
     })
   }
 
@@ -1847,7 +1818,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
         );
       }
       // $FlowIgnore
-      Vue.util.defineReactive(_Vue, key, mockedProperties[key]);
+      Vue__default['default'].util.defineReactive(_Vue, key, mockedProperties[key]);
     });
   }
 
@@ -1912,7 +1883,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     try {
       document.querySelector(selector);
       return true
-    } catch (error) {
+    } catch (error$1) {
       return false
     }
   }
@@ -2361,8 +2332,8 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     var tagName = (name || 'anonymous') + "-stub";
 
     // ignoreElements does not exist in Vue 2.0.x
-    if (Vue.config.ignoredElements) {
-      Vue.config.ignoredElements.push(tagName);
+    if (Vue__default['default'].config.ignoredElements) {
+      Vue__default['default'].config.ignoredElements.push(tagName);
     }
 
     return Object.assign({}, getCoreProperties(componentOptions),
@@ -2387,7 +2358,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
           context
             ? context.children
             : this.$options._renderChildren ||
-                getScopedSlotRenderFunctions(this).map(function (x) { return this$1.$options.parent._vnode.data.scopedSlots[x](); }
+                getScopedSlotRenderFunctions(this).map(function (x) { return this$1.$options.parent._vnode.data.scopedSlots[x]({}); }
                 )
         )
       }})
@@ -2569,6 +2540,8 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
   // 
 
+  function objectWithoutProperties (obj, exclude) { var target = {}; for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && exclude.indexOf(k) === -1) target[k] = obj[k]; return target; }
+
   function createContext(options, scopedSlots) {
     var on = Object.assign({}, (options.context && options.context.on),
       options.listeners);
@@ -2676,7 +2649,13 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
         createChildren(this, h, options)
       )
     };
-    var Parent = _Vue.extend(parentComponentOptions);
+
+    // options  "propsData" can only be used during instance creation with the `new` keyword
+    var propsData = options.propsData;
+    var rest$1 = objectWithoutProperties( options, ["propsData"] );
+    var rest = rest$1; // eslint-disable-line
+    var Parent = _Vue.extend(Object.assign({}, rest,
+      parentComponentOptions));
 
     return new Parent()
   }
@@ -2789,6 +2768,26 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
   // 
 
+  /**
+   * Traverses a vue instance for its parents and returns them in an array format
+   * @param {Component} vm
+   * @returns {Component[]} The component and its corresponding parents, in order from left to right
+   */
+  function findAllParentInstances(childVm) {
+    var instances = [childVm];
+
+    function getParent(_vm) {
+      if (_vm && _vm.$parent) {
+        instances.push(_vm.$parent);
+        return getParent(_vm.$parent)
+      }
+      return _vm
+    }
+
+    getParent(childVm);
+    return instances
+  }
+
   function findAllInstances(rootVm) {
     var instances = [rootVm];
     var i = 0;
@@ -2886,11 +2885,32 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     return findDOMNodes(root.elm, selector.value)
   }
 
-  function errorHandler(errorOrString, vm) {
+  function errorHandler(errorOrString, vm, info) {
     var error =
       typeof errorOrString === 'object' ? errorOrString : new Error(errorOrString);
 
-    vm._error = error;
+    // If a user defined errorHandler was register via createLocalVue
+    // find and call the user defined errorHandler
+    var instancedErrorHandlers = findAllParentInstances(vm)
+      .filter(
+        function (_vm) { return _vm &&
+          _vm.$options &&
+          _vm.$options.localVue &&
+          _vm.$options.localVue.config &&
+          _vm.$options.localVue.config.errorHandler; }
+      )
+      .map(function (_vm) { return _vm.$options.localVue.config.errorHandler; });
+
+    if (vm) {
+      vm._error = error;
+    }
+
+    // should be one error handler, as only once can be registered with local vue
+    // regardless, if more exist (for whatever reason), invoke the other user defined error handlers
+    instancedErrorHandlers.forEach(function (instancedErrorHandler) {
+      instancedErrorHandler(error, vm, info);
+    });
+
     throw error
   }
 
@@ -3513,12 +3533,6 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   exports.lineBreak = new RegExp('\r\n|' + exports.newline.source);
   exports.allLineBreaks = new RegExp(exports.lineBreak.source, 'g');
   });
-  var acorn_1 = acorn.identifier;
-  var acorn_2 = acorn.identifierStart;
-  var acorn_3 = acorn.identifierMatch;
-  var acorn_4 = acorn.newline;
-  var acorn_5 = acorn.lineBreak;
-  var acorn_6 = acorn.allLineBreaks;
 
   /*jshint node:true */
 
@@ -8635,7 +8649,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   WrapperArray.prototype.setData = function setData (data) {
     this.throwErrorIfWrappersIsEmpty('setData');
 
-    this.wrappers.forEach(function (wrapper) { return wrapper.setData(data); });
+    return Promise.all(this.wrappers.map(function (wrapper) { return wrapper.setData(data); }))
   };
 
   WrapperArray.prototype.setMethods = function setMethods (props) {
@@ -8647,13 +8661,13 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   WrapperArray.prototype.setProps = function setProps (props) {
     this.throwErrorIfWrappersIsEmpty('setProps');
 
-    this.wrappers.forEach(function (wrapper) { return wrapper.setProps(props); });
+    return Promise.all(this.wrappers.map(function (wrapper) { return wrapper.setProps(props); }))
   };
 
   WrapperArray.prototype.setValue = function setValue (value) {
     this.throwErrorIfWrappersIsEmpty('setValue');
 
-    this.wrappers.forEach(function (wrapper) { return wrapper.setValue(value); });
+    return Promise.all(this.wrappers.map(function (wrapper) { return wrapper.setValue(value); }))
   };
 
   WrapperArray.prototype.setChecked = function setChecked (checked) {
@@ -8661,7 +8675,9 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
     this.throwErrorIfWrappersIsEmpty('setChecked');
 
-    this.wrappers.forEach(function (wrapper) { return wrapper.setChecked(checked); });
+    return Promise.all(
+      this.wrappers.map(function (wrapper) { return wrapper.setChecked(checked); })
+    )
   };
 
   WrapperArray.prototype.setSelected = function setSelected () {
@@ -8676,7 +8692,9 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
   WrapperArray.prototype.trigger = function trigger (event, options) {
     this.throwErrorIfWrappersIsEmpty('trigger');
 
-    this.wrappers.forEach(function (wrapper) { return wrapper.trigger(event, options); });
+    return Promise.all(
+      this.wrappers.map(function (wrapper) { return wrapper.trigger(event, options); })
+    )
   };
 
   WrapperArray.prototype.destroy = function destroy () {
@@ -10634,7 +10652,9 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     var element = this.element;
     while (element) {
       if (
+        // $FlowIgnore
         element.hidden ||
+        // $FlowIgnore
         (element.style &&
           (element.style.visibility === 'hidden' ||
             element.style.display === 'none'))
@@ -10808,6 +10828,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     var event = getCheckedEvent();
 
     if (tagName === 'INPUT' && type === 'checkbox') {
+      // $FlowIgnore
       if (this.element.checked === checked) {
         return nextTick()
       }
@@ -10826,6 +10847,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
         );
       }
 
+      // $FlowIgnore
       if (this.element.checked === checked) {
         return nextTick()
       }
@@ -10859,6 +10881,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
       throwError("wrapper.setSelected() cannot be called on this element");
     }
 
+    // $FlowIgnore
     if (this.element.selected) {
       return nextTick()
     }
@@ -10940,8 +10963,8 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     }
 
     // Save the original "silent" config so that we can directly mutate props
-    var originalConfig = Vue.config.silent;
-    Vue.config.silent = config.silent;
+    var originalConfig = Vue__default['default'].config.silent;
+    Vue__default['default'].config.silent = config.silent;
 
     try {
       Object.keys(data).forEach(function (key) {
@@ -11000,7 +11023,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     } finally {
       // Ensure you teardown the modifications you made to the user's config
       // After all the props are set, then reset the state
-      Vue.config.silent = originalConfig;
+      Vue__default['default'].config.silent = originalConfig;
     }
   };
 
@@ -11200,7 +11223,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
       return wrapper$1
     }
     var wrapper =
-      node instanceof Vue
+      node instanceof Vue__default['default']
         ? new VueWrapper(node, options)
         : new Wrapper(node, options);
     trackInstance(wrapper);
@@ -11683,7 +11706,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
       } catch (e) {}
       try {
         return (func + '');
-      } catch (e) {}
+      } catch (e$1) {}
     }
     return '';
   }
@@ -12862,11 +12885,11 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
    * _.keysIn(new Foo);
    * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
    */
-  function keysIn$1(object) {
+  function keysIn(object) {
     return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
   }
 
-  var keysIn_1 = keysIn$1;
+  var keysIn_1 = keysIn;
 
   /**
    * The base implementation of `_.assignIn` without support for multiple sources
@@ -13645,7 +13668,7 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
     var keysFunc = isFull
       ? (isFlat ? _getAllKeysIn : _getAllKeys)
-      : (isFlat ? keysIn : keys_1);
+      : (isFlat ? keysIn_1 : keys_1);
 
     var props = isArr ? undefined : keysFunc(value);
     _arrayEach(props || value, function(subValue, key) {
@@ -13691,8 +13714,19 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
   // 
 
-  function createLocalVue(_Vue) {
-    if ( _Vue === void 0 ) _Vue = Vue;
+  /**
+   * Used internally by vue-server-test-utils and test-utils to propagate/create vue instances.
+   * This method is wrapped by createLocalVue in test-utils to provide a different public API signature
+   * @param {Component} _Vue
+   * @param {VueConfig} config
+   * @returns {Component}
+   */
+  function _createLocalVue(
+    _Vue,
+    config
+  ) {
+    if ( _Vue === void 0 ) _Vue = Vue__default['default'];
+    if ( config === void 0 ) config = {};
 
     var instance = _Vue.extend();
 
@@ -13713,13 +13747,14 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     });
 
     // config is not enumerable
-    instance.config = cloneDeep_1(Vue.config);
+    instance.config = cloneDeep_1(Vue__default['default'].config);
 
-    instance.config.errorHandler = Vue.config.errorHandler;
+    // if a user defined errorHandler is defined by a localVue instance via createLocalVue, register it
+    instance.config.errorHandler = config.errorHandler || Vue__default['default'].config.errorHandler;
 
     // option merge strategies need to be exposed by reference
     // so that merge strats registered by plugins can work properly
-    instance.config.optionMergeStrategies = Vue.config.optionMergeStrategies;
+    instance.config.optionMergeStrategies = Vue__default['default'].config.optionMergeStrategies;
 
     // make sure all extends are based on this instance.
     // this is important so that global components registered by plugins,
@@ -13840,8 +13875,8 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
     }
   }
 
-  Vue.config.productionTip = false;
-  Vue.config.devtools = false;
+  Vue__default['default'].config.productionTip = false;
+  Vue__default['default'].config.devtools = false;
 
   function mount(component, options) {
     if ( options === void 0 ) options = {};
@@ -13850,9 +13885,12 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
     polyfill();
 
-    addGlobalErrorHandler(Vue);
+    addGlobalErrorHandler(Vue__default['default']);
 
-    var _Vue = createLocalVue(options.localVue);
+    var _Vue = _createLocalVue(
+      options.localVue,
+      options.localVue ? options.localVue.config : undefined
+    );
 
     var mergedOptions = mergeOptions(options, config);
 
@@ -13890,6 +13928,19 @@ var VueTestUtils = (function (exports, Vue, vueTemplateCompiler) {
 
     return mount(component, Object.assign({}, options,
       {shouldProxy: true}))
+  }
+
+  // 
+
+  /**
+   * Returns a local vue instance to add components, mixins and install plugins without polluting the global Vue class
+   * @param {VueConfig} config
+   * @returns {Component}
+   */
+  function createLocalVue(config) {
+    if ( config === void 0 ) config = {};
+
+    return _createLocalVue(undefined, config)
   }
 
   // 
